@@ -25,13 +25,24 @@ int main(int argc, char** argv) {
 			cout<<" * ";
 		}
 	}
+	cout<<endl;
 	int b=x*y/2;
 	char a [b]={};
 	for(int i=0;i<b;i++)
 	{
 		a[i]=rand()%26+65;
-		cout<<"Il "<<i+1<<" valore è: "<<a<<endl;
+	}
+	for(int i=0;i<b;i++)
+	{
+		for(int t=0;t<b;t++)
+		{
+		    if(a[i]==a[t])
+		    {
+		    	a[i]=rand()%26+65;
+			}
+		}
+		cout<<"Il "<<i+1<<" valore è: "<<a[i]<<endl;
+	}
+
 	}
 	
-	return 0;
-}
