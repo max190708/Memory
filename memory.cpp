@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 		generazione (x,y);
 	}while (x*y%2!=0 || x*y>52);
 	int c[x][y]={0}; //la matrice
-	for(int i=0;i<x;i++)
+	for(int i=0;i<x;i++) // ciclo per stampare il tabellone
 	{
 		cout<<endl<<" * ";
 		for(int r=1;r<y;r++)
@@ -26,23 +26,43 @@ int main(int argc, char** argv) {
 		}
 	}
 	cout<<endl;
-	int b=x*y/2;
+	const int b=x*y/2;
 	char a [b]={};
-	for(int i=0;i<b;i++)
-	{
-		a[i]=rand()%26+65;
-	}
-	for(int i=0;i<b;i++)
-	{
-		for(int t=0;t<b;t++)
-		{
-		    if(a[i]==a[t])
-		    {
-		    	a[i]=rand()%26+65;
-			}
-		}
-		cout<<"Il "<<i+1<<" valore è: "<<a[i]<<endl;
-	}
+	for (int i=0;i<b;i++) //generazione lettere 
+    {
+        bool valido;
+        do {
+            valido=true;
+            a[i]=rand()%26+65;
+            for (int t=0;t<i;t++)
+            {
+                if (a[i]==a[t])
+                {
+                    valido=false;
+                    break;
+                }
+            }
+        } while (!valido);
 
-	}
+        cout <<"Il "<<i+1<<" valore è: "<<a[i]<< endl;
+    }
+    const int h=b*2;
+    char g [h]={};
+    int count=0;
+    	for(int t=0;t<h;t++)	
+    	{
+    	g[t]=a[count];
+    	g[t+1]=a[count];
+    	count++;
+		}
+		for(int t=0;t<h;t++)
+		{
+		 cout <<"Il "<<t+1<<" valore è: "<<g[t]<< endl;
+		}
+		
+		
+		
+		
+			}
+		
 	
