@@ -1,68 +1,123 @@
 #include <iostream>
 #include <ctime>
 #include <stdlib.h>
+#include <unistd.h>
 using namespace std;
 // funzione
-	void generazione (int &a, int &b)
-	{
-	a=rand()%12+4;
-	b=rand()%12+4;
-	}
+ void generazione (int &a, int &b)
+ {
+ a=rand()%4+4;
+ b=rand()%4+4;
+ }
 int main(int argc, char** argv) {
-	srand(time(0));
-	int x,y;
-	generazione (x,y);
-	do
-	{
-		generazione (x,y);
-	}while (x*y%2!=0 || x*y>52);
-	int c[x][y]={0}; //la matrice
-	for(int i=0;i<x;i++) // ciclo per stampare il tabellone
-	{
-		cout<<endl<<" * ";
-		for(int r=1;r<y;r++)
-		{
-			cout<<" * ";
-		}
-	}
-	cout<<endl;
-	const int b=x*y/2;
-	char a [b]={};
-	for (int i=0;i<b;i++) //generazione lettere 
+ srand(time(0));
+ int x,y;
+ generazione (x,y);
+ do
+ {
+  generazione (x,y);
+ }while (x*y>52);
+ char c[x][y]; //la matrice
+ bool scoperto[x][y];
+ for(int i=0;i<x;i++)
+ {
+  for(int r=0;r<y;r++)
+  {
+   scoperto[i][r]=false;
+  }
+ }
+ int tot=x*y;
+ int b;
+ bool dispari=false;
+ if(tot%2!=0) //gestione dispari
+ {
+  b=(tot-1)/2;
+  dispari=true;
+ }else
+ {
+  b=tot/2;
+ }
+ char a [b];
+ for (int i=0;i<b;i++) //generazione lettere
+ {
+  bool valido;
+  do {
+   valido=true;
+   a[i]=rand()%26+65;
+   for (int t=0;t<i;t++)
+   {
+    if (a[i]==a[t])
     {
-        bool valido;
-        do {
-            valido=true;
-            a[i]=rand()%26+65;
-            for (int t=0;t<i;t++)
-            {
-                if (a[i]==a[t])
-                {
-                    valido=false;
-                    break;
-                }
-            }
-        } while (!valido);
-
-        cout <<"Il "<<i+1<<" valore è: "<<a[i]<< endl;
+     valido=false;
+     break;
     }
-    const int h=b*2;
-    char g [h]={};
-    int count=0;
-    	for(int t=0;t<h;t++)	
-    	{
-    	g[t]=a[count];
-    	g[t+1]=a[count];
-    	count++;
-		}
-		for(int t=0;t<h;t++)
-		{
-		 cout <<"Il "<<t+1<<" valore è: "<<g[t]<< endl;
-		}
-		
-		
-		
-		
-			}
-		
-	
+   }
+  } while (!valido);
+ }
+ char temp[tot];
+ int count=0;
+ for(int t=0;t<b*2;t+=2)
+ {
+  temp[t]=a[count];
+  temp[t+1]=a[count];
+  count++;
+ }
+ if(dispari)
+ {
+  temp[tot-1]='0';
+ }
+ for(int i=0;i<tot;i++) //mischio tutto
+ {
+  int r=rand()%tot;
+  char scambia=temp[i];
+  temp[i]=temp[r];
+  temp[r]=scambia;
+ }
+ int k=0;
+ for(int i=0;i<x;i++) //riempio matrice
+ {
+  for(int r=0;r<y;r++)
+  {
+   c[i][r]=temp[k];
+   k++;
+  }
+ }
+ int coppie=0;
+ int tentativi=0;
+ int r1,c1,r2,c2;
+ int target=b;
+ while(coppie<target){ //ciclo gioco
+  cout<<"\033[H\033[2J"; //pulisce schermo
+  cout<<"Tentativi: "<<tentativi<<endl;
+  cout<<"   ";
+  for(int r=0;r<y;r++) cout<<r<<" ";
+  cout<<endl;
+  for(int i=0;i<x;i++)
+  {
+   cout<<i<<"  ";
+   for(int r=0;r<y;r++)
+   {
+    if(scoperto[i][r])
+    {
+     cout<<c[i][r]<<" ";
+    }else
+    {
+     cout<<"* ";
+    }
+   }
+   cout<<endl;
+  }
+  do
+  {
+   cout<<"Inserisci riga e colonna 1 carta: ";
+   cin>>r1>>c1;
+   if(r1<0 || r1>16 || c1<0 || c1>16) // controllo 1
+   {
+       cout<<"Inserito un valore sbagliato.";
+       return 0;
+   }
+  }while(r1<0 || r1>=x || c1<0 || c1>=y || scoperto[r1][c1]);
+  scoperto[r1][c1]=true;
+ }
+ return 0;
+}
