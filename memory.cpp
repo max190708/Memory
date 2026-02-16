@@ -116,8 +116,64 @@ int main(int argc, char** argv) {
        cout<<"Inserito un valore sbagliato.";
        return 0;
    }
-  }while(r1<0 || r1>=x || c1<0 || c1>=y || scoperto[r1][c1]);
+  }while(r1<0 || r1>=x || c1<0 || c1>=y  || scoperto[r1][c1]);
   scoperto[r1][c1]=true;
+  cout<<"\033[H\033[2J";
+  cout<<"Tentativi: "<<tentativi<<endl;
+  cout<<"   ";
+  for(int r=0;r<y;r++) cout<<r<<" ";
+  cout<<endl;
+  for(int i=0;i<x;i++)
+  {
+   cout<<i<<"  ";
+   for(int r=0;r<y;r++)
+   {
+    if(scoperto[i][r]) cout<<c[i][r]<<" ";
+    else cout<<"* ";
+   }
+   cout<<endl;
+  }
+  do
+  {
+   cout<<"Inserisci riga e colonna 2 carta: ";
+   cin>>r2>>c2;
+   if(r2<0 || r2>16 || c2<0 || c2>16) // controllo 2
+   {
+       cout<<"Inserito un valore sbagliato.";
+       return 0;
+   }
+  }while(r2<0 || r2>=x || c2<0 || c2>=y || scoperto[r2][c2]);
+  scoperto[r2][c2]=true;
+  cout<<"\033[H\033[2J";
+  cout<<"Tentativi: "<<tentativi<<endl;
+  cout<<"   ";
+  for(int r=0;r<y;r++) cout<<r<<" ";
+  cout<<endl;
+  for(int i=0;i<x;i++)
+  {
+   cout<<i<<"  ";
+   for(int r=0;r<y;r++)
+   {
+    if(scoperto[i][r]) cout<<c[i][r]<<" ";
+    else cout<<"* ";
+   }
+   cout<<endl;
+  }
+  tentativi++;
+  if(c[r1][c1]==c[r2][c2])
+  {
+   cout<<endl<<"Hai trovato una coppia!"<<endl;
+   coppie++;
+   sleep(1);
+  }
+  else
+  {
+   cout<<endl<<"Non sono uguali..."<<endl;
+   sleep(2);
+   scoperto[r1][c1]=false; //ricopro
+   scoperto[r2][c2]=false;
+  }
  }
+ cout<<endl<<"COMPLIMENTI! Hai finito in "<<tentativi<<" tentativi."<<endl;
  return 0;
 }
